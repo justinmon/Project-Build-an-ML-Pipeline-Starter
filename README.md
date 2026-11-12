@@ -90,6 +90,21 @@ The exact command completed successfully (exit status 0), with **all six data ch
 
 The artifact chain was verified through W&B: `sample.csv:v1` → `clean_sample.csv:v2` → `trainval_data.csv:v2` → `random_forest_export:v5`. The original `reference` alias remains on clean dataset `v0`, and `prod` remains on selected model `v3`. The new export contains the model, MLflow metadata, environment files, and input examples. See [release validation results](RELEASE_VALIDATION.json).
 
+## Final rubric verification
+
+The final submission release is **[1.0.3](https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter/releases/tag/1.0.3)**, commit `3e42b745a681ea8fb148965c9ac9d17cdec25e86`. It includes the executed EDA notebook (seven code cells executed, zero errors). Extra trial versions are expressly permitted by the rubric.
+
+To close the release-tag evidence requirement, baseline **1.0.2**, cut from the restored pre-filter commit, was run remotely with `sample2.csv`: five checks passed and `test_proper_boundaries` failed on exactly one listing. The subsequent corrected **1.0.3** tag was run remotely on the same sample and completed successfully with **six passing checks**, exit status 0, and a new model `random_forest_export:v6` from [run h9rhljch](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/h9rhljch). Its validation MAE is $32.427103/night and R2 is 0.578117. The final lineage uses raw `sample.csv:v1`, clean `clean_sample.csv:v2`, and `trainval_data.csv:v3`.
+
+```bash
+mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
+  -v 1.0.3 -P hydra_options="etl.sample='sample2.csv'"
+```
+
+See [the complete rubric review](RUBRIC_REVIEW.md) and [release evidence](RELEASE_VALIDATION.json). The rubric's isolated `clean_data.csv` wording differs from Step 2 and later rubric sections; the project follows their consistent `clean_sample.csv` name. The `model_export` requirement is the artifact type; the configured artifact collection is `random_forest_export`.
+
+For submission, select the public GitHub repository in Udacity and include both the GitHub and public W&B project links above in **Submission Details**. Connecting GitHub to Udacity and submitting are separate user actions.
+
 ## Possible improvements
 
 Future work could compare other regressors, use richer listing-text features, investigate neighborhood-level errors, and monitor drift and performance over time.

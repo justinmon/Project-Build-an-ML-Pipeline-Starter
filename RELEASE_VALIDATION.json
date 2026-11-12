@@ -1,14 +1,22 @@
 {
-  "release": "1.0.1",
-  "commit": "bc60052edff717a4794d6e3ffd443dfd833f16c0",
+  "release": "1.0.3",
+  "commit": "3e42b745a681ea8fb148965c9ac9d17cdec25e86",
   "sample": "sample2.csv",
   "baseline_commit": "9a6dfb2ec358ab16230905901363dbe2855721db",
-  "baseline_checks": {"passed": 5, "failed": 1, "failure": "test_proper_boundaries", "out_of_bounds_rows": 1},
-  "initial_release_caveat": "1.0.0 skipped cleaning and data checks; the expected boundary failure was verified using the restored baseline commit instead. The original tag was retained unchanged.",
-  "mlflow_run": "b948719fbf6e4675813a5d93cad5e7b2",
+  "baseline_checks": {
+    "passed": 5,
+    "failed": 1,
+    "failure": "test_proper_boundaries",
+    "out_of_bounds_rows": 1
+  },
+  "initial_release_caveat": "Initial release 1.0.0 skipped cleaning and data checks and is retained unchanged. The full release-tag exercise was subsequently verified using failing baseline release 1.0.2 and successful corrected release 1.0.3.",
+  "mlflow_run": "ccb52a04197947779231568a002cc168",
   "exit_status": 0,
-  "data_checks": {"passed": 6, "failed": 0},
-  "wandb_run": "ff4s2rc1",
+  "data_checks": {
+    "passed": 6,
+    "failed": 0
+  },
+  "wandb_run": "h9rhljch",
   "wandb_run_state": "finished",
   "validation_mae": 32.42710314040695,
   "validation_r2": 0.5781173766761045,
@@ -17,10 +25,25 @@
   "artifacts": {
     "raw": "sample.csv:v1",
     "clean": "clean_sample.csv:v2",
-    "trainval": "trainval_data.csv:v2",
-    "model": "random_forest_export:v5"
+    "trainval": "trainval_data.csv:v3",
+    "model": "random_forest_export:v6"
   },
   "prod_unchanged": "random_forest_export:v3",
   "reference_unchanged": "clean_sample.csv:v0",
-  "model_files": ["MLmodel", "conda.yaml", "input_example.json", "model.pkl", "python_env.yaml", "requirements.txt", "serving_input_example.json"]
+  "model_files": [
+    "MLmodel",
+    "conda.yaml",
+    "input_example.json",
+    "model.pkl",
+    "python_env.yaml",
+    "requirements.txt",
+    "serving_input_example.json"
+  ],
+  "baseline_release": "1.0.2",
+  "baseline_exit_status": 1,
+  "eda": {
+    "code_cells": 7,
+    "errors": 0,
+    "executed_cells": 7
+  }
 }
