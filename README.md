@@ -9,7 +9,7 @@ This project builds a repeatable pipeline for estimating nightly rental prices i
 ## Pipeline
 
 1. `download`: version the incoming sample as `sample.csv`.
-2. `basic_cleaning`: retain prices from $10 through $350 and convert review dates; upload `clean_sample.csv`.
+2. `basic_cleaning`: retain prices from $10 through $350, convert review dates, and retain longitude -74.25 through -73.50 and latitude 40.5 through 41.2; upload `clean_sample.csv`.
 3. `data_check`: check columns, borough names, geographic bounds, distribution drift, row count, and price range. The `reference` alias stays pinned to the original clean dataset.
 4. `data_split`: reserve 20% for held-out testing; upload `trainval_data.csv` and `test_data.csv`.
 5. `train_random_forest`: split the remainder into training and validation data, fit preprocessing and regression together, record MAE/R2, and export an MLflow model to W&B.
@@ -68,14 +68,25 @@ The export reloaded through both MLflow sklearn and pyfunc interfaces and reprod
 
 ## Release validation
 
-Release `1.0.0` captures the completed pipeline before the new-sample geographic correction. Exercise it with:
+The initial `1.0.0` release was found to contain an incomplete orchestration file: cleaning and data-check branches were placeholders. Although its execution completed, it reused the previous clean dataset, so that run is **not valid evidence** of new-sample validation. The tag is retained to preserve an honest release history.
+
+The cleaning arguments, both missing data tests, and orchestration were restored in commit `9a6dfb2ec358ab16230905901363dbe2855721db`. The baseline geographic-check exercise uses this immutable revision:
 
 ```bash
 mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
-  -v 1.0.0 -P hydra_options="etl.sample='sample2.csv'"
+  -v 9a6dfb2ec358ab16230905901363dbe2855721db -P hydra_options="etl.sample='sample2.csv'"
 ```
 
-The release/update exercise checks that geographic validation catches an out-of-bounds listing before retraining. The correction and its next release are recorded after observing that failure.
+The restored baseline produced **five passing tests and one failure**, `test_proper_boundaries`: exactly one listing was outside the accepted region. The pipeline stopped before splitting or training, as required. MLflow parent run: `1c82362fe4f9460195083abe324d2383`.
+
+Release `1.0.1` adds the matching inclusive longitude/latitude filter before saving the cleaned data. Run the complete updated release with:
+
+```bash
+mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
+  -v 1.0.1 -P hydra_options="etl.sample='sample2.csv'"
+```
+
+Full release validation results will be recorded after this exact command finishes. The original `reference` dataset and selected `prod` model remain the basis for the earlier comparison.
 
 ## Possible improvements
 
