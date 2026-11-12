@@ -1,0 +1,26 @@
+{
+  "release": "1.0.1",
+  "commit": "bc60052edff717a4794d6e3ffd443dfd833f16c0",
+  "sample": "sample2.csv",
+  "baseline_commit": "9a6dfb2ec358ab16230905901363dbe2855721db",
+  "baseline_checks": {"passed": 5, "failed": 1, "failure": "test_proper_boundaries", "out_of_bounds_rows": 1},
+  "initial_release_caveat": "1.0.0 skipped cleaning and data checks; the expected boundary failure was verified using the restored baseline commit instead. The original tag was retained unchanged.",
+  "mlflow_run": "b948719fbf6e4675813a5d93cad5e7b2",
+  "exit_status": 0,
+  "data_checks": {"passed": 6, "failed": 0},
+  "wandb_run": "ff4s2rc1",
+  "wandb_run_state": "finished",
+  "validation_mae": 32.42710314040695,
+  "validation_r2": 0.5781173766761045,
+  "raw_rows": 48895,
+  "clean_rows": 46427,
+  "artifacts": {
+    "raw": "sample.csv:v1",
+    "clean": "clean_sample.csv:v2",
+    "trainval": "trainval_data.csv:v2",
+    "model": "random_forest_export:v5"
+  },
+  "prod_unchanged": "random_forest_export:v3",
+  "reference_unchanged": "clean_sample.csv:v0",
+  "model_files": ["MLmodel", "conda.yaml", "input_example.json", "model.pkl", "python_env.yaml", "requirements.txt", "serving_input_example.json"]
+}

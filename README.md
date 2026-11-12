@@ -86,7 +86,9 @@ mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git
   -v 1.0.1 -P hydra_options="etl.sample='sample2.csv'"
 ```
 
-Full release validation results will be recorded after this exact command finishes. The original `reference` dataset and selected `prod` model remain the basis for the earlier comparison.
+The exact command completed successfully (exit status 0), with **all six data checks passing**. The new sample contained 48,895 rows; price and geographic cleaning retained 46,427. The new model is `random_forest_export:v5`, produced by [run ff4s2rc1](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/ff4s2rc1), with validation MAE **$32.427103/night** and R2 **0.578117**. These are validation results for the updated sample, not a repeat of the earlier held-out evaluation.
+
+The artifact chain was verified through W&B: `sample.csv:v1` → `clean_sample.csv:v2` → `trainval_data.csv:v2` → `random_forest_export:v5`. The original `reference` alias remains on clean dataset `v0`, and `prod` remains on selected model `v3`. The new export contains the model, MLflow metadata, environment files, and input examples. See [release validation results](RELEASE_VALIDATION.json).
 
 ## Possible improvements
 
