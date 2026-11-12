@@ -145,3 +145,11 @@ mlruns/
 outputs/
 random_forest_dir/
 multirun/
+
+# Generated configuration and local runtime files
+rf_config.json
+/src/basic_cleaning/clean_sample.csv
+/src/eda/eda.html
+/.credentials/
+/.setup/
+/.tools/
