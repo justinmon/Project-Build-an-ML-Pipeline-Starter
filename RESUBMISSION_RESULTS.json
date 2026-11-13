@@ -185,5 +185,49 @@
     },
     "test_artifact": "test_data.csv:v4",
     "mae_change_percent": -0.9868050162300079
+  },
+  "release": {
+    "tag": "1.0.4",
+    "sample": "sample2.csv",
+    "exit_status": 0,
+    "data_checks_passed": 6,
+    "run_id": "d3qrlnnt",
+    "state": "finished",
+    "validation_mae": 32.42710314040695,
+    "validation_r2": 0.5781173766761045,
+    "model": {
+      "name": "model_export:v4",
+      "id": "QXJ0aWZhY3Q6NDU5NTU0MjQ3Mw==",
+      "type": "model_export",
+      "files": [
+        "MLmodel",
+        "conda.yaml",
+        "input_example.json",
+        "model.pkl",
+        "python_env.yaml",
+        "requirements.txt",
+        "serving_input_example.json"
+      ]
+    },
+    "trainval": {
+      "name": "trainval_data.csv:v5",
+      "id": "QXJ0aWZhY3Q6NDU5NTUzNTY2Ng==",
+      "type": "trainval_data",
+      "files": [
+        "tmp0cd95_su"
+      ]
+    },
+    "clean": {
+      "name": "clean_data.csv:v1",
+      "id": "QXJ0aWZhY3Q6NDU5NTUyNzY0Mw==",
+      "type": "clean_sample",
+      "files": [
+        "clean_data.csv"
+      ]
+    },
+    "clean_rows": 46427,
+    "reference_unchanged": true,
+    "prod_unchanged": true,
+    "commit": "4192b013f8a2ff31fc64619d0f51f4f2d1e3df3c"
   }
 }

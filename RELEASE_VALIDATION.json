@@ -1,15 +1,56 @@
 {
+  "tag": "1.0.4",
+  "sample": "sample2.csv",
+  "exit_status": 0,
+  "data_checks_passed": 6,
+  "run_id": "d3qrlnnt",
+  "state": "finished",
+  "validation_mae": 32.42710314040695,
+  "validation_r2": 0.5781173766761045,
+  "model": {
+    "name": "model_export:v4",
+    "id": "QXJ0aWZhY3Q6NDU5NTU0MjQ3Mw==",
+    "type": "model_export",
+    "files": [
+      "MLmodel",
+      "conda.yaml",
+      "input_example.json",
+      "model.pkl",
+      "python_env.yaml",
+      "requirements.txt",
+      "serving_input_example.json"
+    ]
+  },
+  "trainval": {
+    "name": "trainval_data.csv:v5",
+    "id": "QXJ0aWZhY3Q6NDU5NTUzNTY2Ng==",
+    "type": "trainval_data",
+    "files": [
+      "tmp0cd95_su"
+    ]
+  },
+  "clean": {
+    "name": "clean_data.csv:v1",
+    "id": "QXJ0aWZhY3Q6NDU5NTUyNzY0Mw==",
+    "type": "clean_sample",
+    "files": [
+      "clean_data.csv"
+    ]
+  },
+  "clean_rows": 46427,
+  "reference_unchanged": true,
+  "prod_unchanged": true,
+  "commit": "4192b013f8a2ff31fc64619d0f51f4f2d1e3df3c",
   "release": "1.0.4",
-  "status": "pending_remote_execution",
-  "corrected_clean_artifact": "clean_data.csv",
-  "corrected_model_artifact": "model_export",
-  "selection_results": "RESUBMISSION_RESULTS.json",
-  "held_out_run": "p7llvwgm",
+  "status": "passed",
+  "reference": "clean_data.csv:v0",
+  "prod": "model_export:v3",
+  "selection_and_test_results": "RESUBMISSION_RESULTS.json",
   "historical_release_exercise": {
-    "baseline_release": "1.0.2",
-    "baseline_result": "Five checks passed; test_proper_boundaries failed on exactly one out-of-bounds listing in sample2.csv.",
-    "corrected_release": "1.0.3",
-    "corrected_result": "Six checks passed and a new model was trained.",
-    "note": "These immutable historical releases use the old collection names. Release 1.0.4 implements the four reviewer corrections."
+    "baseline": "1.0.2",
+    "baseline_result": "Five passed; one geographic-boundary failure on sample2.csv",
+    "corrected": "1.0.3",
+    "corrected_result": "Six passed; new model trained",
+    "note": "Historical tags retain the earlier names; 1.0.4 implements the reviewer-required names."
   }
 }

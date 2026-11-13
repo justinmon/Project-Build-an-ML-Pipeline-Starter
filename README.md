@@ -64,7 +64,20 @@ All six data checks passed on the renamed baseline. All four new Hydra jobs fini
 
 `model_export:v3` received `prod` based on the lowest validation MAE. The subsequent [held-out evaluation](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/p7llvwgm) finished using this exact model and `test_data.csv:v4`: test MAE **$33.846924/night**, R2 **0.561929**. Test MAE is about 0.99% lower than validation, indicating comparable performance on this split. Held-out scores were not used to retune or select the model.
 
-The original-sample baseline `clean_data.csv:v0` retains `reference`. [Machine-readable results](RESUBMISSION_RESULTS.json) include the new run IDs, artifact IDs, manifests, row counts, overlap check, and evaluation. [MODEL_EVALUATION.md](MODEL_EVALUATION.md) records the comparison. The next release is **1.0.4**; its remote execution on `sample2.csv` will be recorded after publication.
+The original-sample baseline `clean_data.csv:v0` retains `reference`. [Machine-readable results](RESUBMISSION_RESULTS.json) include the new run IDs, artifact IDs, manifests, row counts, overlap check, evaluation, and release verification. [MODEL_EVALUATION.md](MODEL_EVALUATION.md) records the comparison.
+
+### Corrected release 1.0.4
+
+The exact published [release 1.0.4](https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter/releases/tag/1.0.4), commit `4192b013f8a2ff31fc64619d0f51f4f2d1e3df3c`, was run remotely with:
+
+```bash
+mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
+  -v 1.0.4 -P hydra_options="etl.sample='sample2.csv'"
+```
+
+It finished successfully with exit status 0 and all six data checks passing. The new sample's cleaning retained 46,427 listings as `clean_data.csv:v1`; splitting produced `trainval_data.csv:v5`; training produced **`model_export:v4`**, [run d3qrlnnt](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/d3qrlnnt), with validation MAE **$32.427103/night** and R2 **0.578117**. These are validation metrics for the updated sample, not a repeated held-out test or a basis for changing the original cohort's selection.
+
+The audit confirmed that `reference` remains on `clean_data.csv:v0` and `prod` remains on the original-sample validation winner `model_export:v3`. See [release verification](RELEASE_VALIDATION.json).
 
 ## Evidence from the submitted account
 
@@ -73,11 +86,17 @@ These files are new screenshots from `justinnull-western-governors-university / 
 - [Reference alias evidence](images/wandb-tag-data-test.png): the new `clean_data.csv:v0` baseline and its `reference` alias.
 - [Pipeline graph evidence](images/wandb-pipeline-graph.png): raw data, cleaning, data checks, splitting, four new models, and held-out evaluation. [Selected model evidence](images/wandb-prod-model.png) shows `model_export:v3` and `prod`.
 
+Click either screenshot to inspect it at full resolution.
+
+![Reference alias in the submitted W&B account](images/wandb-tag-data-test.png)
+
+![Actual pipeline lineage in the submitted W&B account](images/wandb-pipeline-graph.png)
+
 The starter animation `images/wandb_select_best.gif` is a course example, not evidence of this account’s work. The executed EDA notebook at `src/eda/eda.ipynb` contains seven executed code cells and zero errors.
 
 ## Earlier release exercise
 
-The earlier trial history is preserved. Published baseline 1.0.2 failed `test_proper_boundaries` on exactly one out-of-bounds listing in `sample2.csv`, with five other checks passing. Corrected release 1.0.3 passed all six checks and trained a new model. Those releases used the old collection names; the resubmission update will use the reviewer-required names above. See the GitHub releases for the immutable earlier code and results.
+The earlier trial history is preserved. Published baseline 1.0.2 failed `test_proper_boundaries` on exactly one out-of-bounds listing in `sample2.csv`, with five other checks passing. Corrected release 1.0.3 passed all six checks and trained a new model. Those releases used the old collection names; the resubmission update 1.0.4 uses the reviewer-required names above. See the GitHub releases for the immutable earlier code and results.
 
 ## Future improvements
 

@@ -17,7 +17,7 @@ This review supersedes the first submission's naming and screenshot interpretati
 | Model selection | Lowest validation MAE $34.184256 selected `model_export:v3`; `prod` applied before held-out evaluation. |
 | Held-out testing | New finished run `p7llvwgm` consumes exactly selected model `v3` and `test_data.csv:v4`. MAE $33.846924 and R2 0.561929 are comparable to validation. Test results did not select or retune the model. |
 | Own lineage screenshot (Q17) | `images/wandb-pipeline-graph.png` shows the user's account and actual cleaned-data lineage, including data checks, split, four new training/export paths, and held-out evaluation. |
-| Release/update exercise | Previously accepted baseline release 1.0.2 fails the geographic check on one new-sample listing; corrected 1.0.3 succeeds. New corrected-name release 1.0.4 is also remotely verified after publication. |
+| Release/update exercise | Previously accepted baseline release 1.0.2 fails the geographic check on one new-sample listing; corrected 1.0.3 succeeds. New corrected-name release 1.0.4 was run remotely: exit 0, six checks passed, new `model_export:v4` from run `d3qrlnnt`. |
 | Geographic filtering | Inclusive longitude [-74.25,-73.50] and latitude [40.5,41.2] filters remain implemented. |
 | Future improvements | README discusses alternative models, text features, neighborhood errors, and monitoring. |
 

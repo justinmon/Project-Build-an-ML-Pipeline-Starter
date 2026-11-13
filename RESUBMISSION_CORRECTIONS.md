@@ -20,6 +20,6 @@ All four requested corrections from the review of the November 12 submission hav
 
 [Machine-readable run, artifact, and metric evidence](RESUBMISSION_RESULTS.json) and [the held-out comparison](MODEL_EVALUATION.md) accompany the screenshots.
 
-The corrected release is 1.0.4. Its exact remote execution on `sample2.csv` is checked separately after publication. The previously accepted baseline-failure exercise remains in immutable releases 1.0.2 and 1.0.3.
+The exact corrected release **1.0.4** was executed remotely on `sample2.csv` and finished with exit status 0, all six checks passing, and new model **`model_export:v4`**, run **`d3qrlnnt`**. Its validation MAE is $32.427103 and R2 is 0.578117. The audit verified `clean_data.csv:v1`, `trainval_data.csv:v5`, the complete seven-file model package, 46,427 clean rows, and preservation of the original `reference` and selected `prod` aliases. The previously accepted baseline-failure exercise remains in immutable releases 1.0.2 and 1.0.3.
 
 The project has not been resubmitted. Grading remains the reviewer's decision.
