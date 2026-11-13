@@ -101,5 +101,3 @@ The earlier trial history is preserved. Published baseline 1.0.2 failed `test_pr
 ## Future improvements
 
 Compare other regressors, improve text features, inspect neighborhood-level errors, and monitor drift and model performance over time.
-
-Based on the Udacity WGU starter project. The original license is retained.
