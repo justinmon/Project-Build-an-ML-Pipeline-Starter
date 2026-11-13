@@ -1,0 +1,189 @@
+{
+  "project": "justinnull-western-governors-university/nyc_airbnb",
+  "source_commit": "4a70f0725ec452916a1cacf4d559d8d8e3b0ce01",
+  "sample": "sample1.csv",
+  "models": [
+    {
+      "run_id": "i7ayn7af",
+      "run_name": "lyric-dawn-37",
+      "state": "finished",
+      "max_depth": 50,
+      "n_estimators": 200,
+      "validation_mae": 34.184256029779775,
+      "validation_r2": 0.5506161616124368,
+      "model": {
+        "name": "model_export:v3",
+        "id": "QXJ0aWZhY3Q6NDU5NTI5NjAzMQ==",
+        "type": "model_export",
+        "files": [
+          "MLmodel",
+          "conda.yaml",
+          "input_example.json",
+          "model.pkl",
+          "python_env.yaml",
+          "requirements.txt",
+          "serving_input_example.json"
+        ]
+      },
+      "trainval_id": "QXJ0aWZhY3Q6NDU5NTI2NjE1MA=="
+    },
+    {
+      "run_id": "qcqtfg92",
+      "run_name": "zany-pyramid-36",
+      "state": "finished",
+      "max_depth": 50,
+      "n_estimators": 100,
+      "validation_mae": 34.196322144888455,
+      "validation_r2": 0.550075980783665,
+      "model": {
+        "name": "model_export:v2",
+        "id": "QXJ0aWZhY3Q6NDU5NTI5MTQ1OA==",
+        "type": "model_export",
+        "files": [
+          "MLmodel",
+          "conda.yaml",
+          "input_example.json",
+          "model.pkl",
+          "python_env.yaml",
+          "requirements.txt",
+          "serving_input_example.json"
+        ]
+      },
+      "trainval_id": "QXJ0aWZhY3Q6NDU5NTI2NjE1MA=="
+    },
+    {
+      "run_id": "o8ip6sry",
+      "run_name": "copper-cosmos-35",
+      "state": "finished",
+      "max_depth": 10,
+      "n_estimators": 200,
+      "validation_mae": 34.404576149502475,
+      "validation_r2": 0.546276374972624,
+      "model": {
+        "name": "model_export:v1",
+        "id": "QXJ0aWZhY3Q6NDU5NTI4ODQyNA==",
+        "type": "model_export",
+        "files": [
+          "MLmodel",
+          "conda.yaml",
+          "input_example.json",
+          "model.pkl",
+          "python_env.yaml",
+          "requirements.txt",
+          "serving_input_example.json"
+        ]
+      },
+      "trainval_id": "QXJ0aWZhY3Q6NDU5NTI2NjE1MA=="
+    },
+    {
+      "run_id": "sifxo00k",
+      "run_name": "vital-firefly-34",
+      "state": "finished",
+      "max_depth": 10,
+      "n_estimators": 100,
+      "validation_mae": 34.431949196557326,
+      "validation_r2": 0.5456126597490436,
+      "model": {
+        "name": "model_export:v0",
+        "id": "QXJ0aWZhY3Q6NDU5NTI4NDE4NQ==",
+        "type": "model_export",
+        "files": [
+          "MLmodel",
+          "conda.yaml",
+          "input_example.json",
+          "model.pkl",
+          "python_env.yaml",
+          "requirements.txt",
+          "serving_input_example.json"
+        ]
+      },
+      "trainval_id": "QXJ0aWZhY3Q6NDU5NTI2NjE1MA=="
+    }
+  ],
+  "selected": {
+    "run_id": "i7ayn7af",
+    "run_name": "lyric-dawn-37",
+    "state": "finished",
+    "max_depth": 50,
+    "n_estimators": 200,
+    "validation_mae": 34.184256029779775,
+    "validation_r2": 0.5506161616124368,
+    "model": {
+      "name": "model_export:v3",
+      "id": "QXJ0aWZhY3Q6NDU5NTI5NjAzMQ==",
+      "type": "model_export",
+      "files": [
+        "MLmodel",
+        "conda.yaml",
+        "input_example.json",
+        "model.pkl",
+        "python_env.yaml",
+        "requirements.txt",
+        "serving_input_example.json"
+      ]
+    },
+    "trainval_id": "QXJ0aWZhY3Q6NDU5NTI2NjE1MA=="
+  },
+  "artifacts": {
+    "raw": {
+      "name": "sample.csv:v0",
+      "id": "QXJ0aWZhY3Q6NDU2NTMzODI5NQ==",
+      "type": "raw_data",
+      "files": [
+        "sample1.csv"
+      ]
+    },
+    "reference": {
+      "name": "clean_data.csv:v0",
+      "id": "QXJ0aWZhY3Q6NDU5NTIxMzUzMQ==",
+      "type": "clean_sample",
+      "files": [
+        "clean_data.csv"
+      ]
+    },
+    "trainval": {
+      "name": "trainval_data.csv:v4",
+      "id": "QXJ0aWZhY3Q6NDU5NTI2NjE1MA==",
+      "type": "trainval_data",
+      "files": [
+        "tmp2fgalfnb"
+      ]
+    },
+    "test": {
+      "name": "test_data.csv:v4",
+      "id": "QXJ0aWZhY3Q6NDU5NTI2NjUxNA==",
+      "type": "test_data",
+      "files": [
+        "tmp2x4v5bxf"
+      ]
+    }
+  },
+  "rows": {
+    "clean": 19001,
+    "trainval": 15200,
+    "test": 3801
+  },
+  "train_test_id_overlap": 0,
+  "evaluation": {
+    "run_id": "p7llvwgm",
+    "state": "finished",
+    "test_mae": 33.846924076517,
+    "test_r2": 0.5619290498292977,
+    "model": {
+      "name": "model_export:v3",
+      "id": "QXJ0aWZhY3Q6NDU5NTI5NjAzMQ==",
+      "type": "model_export",
+      "files": [
+        "MLmodel",
+        "conda.yaml",
+        "input_example.json",
+        "model.pkl",
+        "python_env.yaml",
+        "requirements.txt",
+        "serving_input_example.json"
+      ]
+    },
+    "test_artifact": "test_data.csv:v4",
+    "mae_change_percent": -0.9868050162300079
+  }
+}

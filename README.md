@@ -1,25 +1,28 @@
-# Reproducible NYC Short-Term Rental Price Pipeline
+# NYC rental-price machine learning pipeline
 
-This project builds a repeatable pipeline for estimating nightly rental prices in New York City. MLflow runs isolated components, Hydra manages configuration and parameter comparisons, and Weights & Biases versions datasets, models, metrics, and lineage.
+This project uses MLflow, Hydra, scikit-learn, and W&B to clean rental listings, validate data, compare random forests, and evaluate a selected model on held-out data.
 
 - [GitHub repository](https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter)
-- [W&B project](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb)
-- [Selected model](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/artifacts/model_export/random_forest_export/v3)
+- [Public W&B project](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb)
+- [Reviewer corrections](RESUBMISSION_CORRECTIONS.md)
 
-## Pipeline
+## Reviewer-requested artifact names
 
-1. `download`: version the incoming sample as `sample.csv`.
-2. `basic_cleaning`: retain prices from $10 through $350, convert review dates, and retain longitude -74.25 through -73.50 and latitude 40.5 through 41.2; upload `clean_sample.csv`.
-3. `data_check`: check columns, borough names, geographic bounds, distribution drift, row count, and price range. The `reference` alias stays pinned to the original clean dataset.
-4. `data_split`: reserve 20% for held-out testing; upload `trainval_data.csv` and `test_data.csv`.
-5. `train_random_forest`: split the remainder into training and validation data, fit preprocessing and regression together, record MAE/R2, and export an MLflow model to W&B.
-6. `test_regression_model`: explicitly evaluate a selected model carrying the `prod` alias. This step is excluded from default training.
+The current code follows the reviewer’s exact naming requirements:
 
-The EDA notebook is executed and saved at `src/eda/eda.ipynb`. Missing values are handled inside the inference pipeline. Categorical values use imputation and encoding, numeric inputs use constant imputation, review dates become elapsed-day features, and listing names use TF-IDF.
+| Purpose | Collection | Type / alias |
+| --- | --- | --- |
+| Raw sample | `sample.csv` | `raw_data` |
+| Cleaned data | `clean_data.csv` | `clean_sample`; fixed baseline alias `reference` |
+| Training and validation | `trainval_data.csv` | `trainval_data` |
+| Held-out test | `test_data.csv` | `test_data` |
+| MLflow model package | `model_export` | `model_export`; selected model alias `prod` |
+
+The cleaner saves and uploads a file named `clean_data.csv`. Data checking and splitting consume `clean_data.csv:latest`; drift checking uses `clean_data.csv:reference`. Training outputs `model_export`; the explicit held-out component consumes `model_export:prod`. The geographic filter retains longitude [-74.25, -73.50] and latitude [40.5, 41.2], in addition to the configured price limits.
 
 ## Setup
 
-Use Linux or macOS with Conda/Miniforge. The project targets Python 3.13. Components pin their dependencies separately.
+Use a Linux environment with Conda/Miniforge:
 
 ```bash
 git clone https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git
@@ -30,83 +33,54 @@ export WANDB_BASE_URL=https://api.forge.coreweave.com
 wandb login --verify
 ```
 
-The development environment uses W&B 0.31.0 for the current Forge login flow. Validated component environments retain W&B 0.24.0. `WANDB_BASE_URL` makes both use the same endpoint. For a nonstandard Conda installation, set `MLFLOW_CONDA_HOME` to its installation directory. Keep API keys outside the repository. To log to another W&B team, set `WANDB_ENTITY` to its slug.
+The environment includes Git for remote MLflow release execution. Development uses W&B 0.31.0 and component environments use W&B 0.24.0, with the same Forge endpoint. If Conda is installed in a nonstandard location, set `MLFLOW_CONDA_HOME` to that installation. API keys belong outside the repository.
 
-## Run and compare models
+## Pipeline and model comparison
+
+For a new project, initialize the original reference dataset before running the drift check:
 
 ```bash
-# Download, clean, check, split, and train using config.yaml.
-mlflow run .
-
-# Run one component through the pipeline.
-mlflow run . -P steps=data_check
-
-# Four configurations used for model selection.
+mlflow run . -P steps=download,basic_cleaning
+# In your own W&B project, mark the original clean_data.csv version as reference.
+mlflow run . -P steps=data_check,data_split
 mlflow run . -P steps=train_random_forest \
   -P hydra_options="modeling.random_forest.max_depth=10,50 modeling.random_forest.n_estimators=100,200 -m"
-
-# After promoting a selected model to prod in W&B.
+# Select the lowest validation MAE and apply prod to that model_export version.
 mlflow run . -P steps=test_regression_model
 ```
 
-Split sizes, random seed, price bounds, drift threshold, and forest parameters are in `config.yaml`. Defaults use the selected 200-tree forest with maximum depth 50. Splitting and training use seed 42 and borough stratification.
+After the reference exists, `mlflow run .` runs the complete default pipeline. Held-out evaluation is intentionally excluded from default training. Price limits, split sizes, seed, stratification, and forest parameters come from `config.yaml`. Both split stages use seed 42 and borough stratification. The four comparisons vary depth (10/50) and trees (100/200). Select on validation MAE before running the held-out test.
 
-## Model selection and held-out results
+## Resubmission validation
 
-The original sample has 20,000 listings; price cleaning retained 19,001. The split contains 12,160 training rows, 3,040 validation rows, and 3,801 held-out test rows, with no training/test ID overlap.
+All six data checks passed on the renamed baseline. All four new Hydra jobs finished using the same `trainval_data.csv:v4`. The clean baseline has 19,001 rows: 15,200 train/validation and 3,801 held-out test rows, with zero overlapping IDs. The inner split has 12,160 training and 3,040 validation rows.
 
-| Maximum depth | Trees | Validation MAE ($/night) | Validation R2 |
-| ---: | ---: | ---: | ---: |
-| 10 | 100 | 34.431949 | 0.545613 |
-| 10 | 200 | 34.404576 | 0.546276 |
-| 50 | 100 | 34.196322 | 0.550076 |
-| 50 | 200 | **34.184256** | **0.550616** |
+| Depth | Trees | Model export | Validation MAE ($/night) | Validation R2 | W&B run |
+| ---: | ---: | --- | ---: | ---: | --- |
+| 10 | 100 | `model_export:v0` | 34.431949 | 0.545613 | `sifxo00k` |
+| 10 | 200 | `model_export:v1` | 34.404576 | 0.546276 | `o8ip6sry` |
+| 50 | 100 | `model_export:v2` | 34.196322 | 0.550076 | `qcqtfg92` |
+| 50 | 200 | **`model_export:v3`** | **34.184256** | **0.550616** | `i7ayn7af` |
 
-Selection used validation MAE. Model `random_forest_export:v3` received `prod` before held-out evaluation. Test MAE was **$33.846924/night**, with **R2 0.561929**: about 0.99% lower MAE than validation, indicating comparable performance on this split. Held-out results were not used to retune the model.
+`model_export:v3` received `prod` based on the lowest validation MAE. The subsequent [held-out evaluation](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/p7llvwgm) finished using this exact model and `test_data.csv:v4`: test MAE **$33.846924/night**, R2 **0.561929**. Test MAE is about 0.99% lower than validation, indicating comparable performance on this split. Held-out scores were not used to retune or select the model.
 
-The export reloaded through both MLflow sklearn and pyfunc interfaces and reproduced validation metrics. See [the evaluation report](MODEL_EVALUATION.md) and [recorded test results](EVALUATION_RESULTS.json). The model artifact's **Lineage** view in W&B shows data-to-model-to-test connections.
+The original-sample baseline `clean_data.csv:v0` retains `reference`. [Machine-readable results](RESUBMISSION_RESULTS.json) include the new run IDs, artifact IDs, manifests, row counts, overlap check, and evaluation. [MODEL_EVALUATION.md](MODEL_EVALUATION.md) records the comparison. The next release is **1.0.4**; its remote execution on `sample2.csv` will be recorded after publication.
 
-## Release validation
+## Evidence from the submitted account
 
-The initial `1.0.0` release was found to contain an incomplete orchestration file: cleaning and data-check branches were placeholders. Although its execution completed, it reused the previous clean dataset, so that run is **not valid evidence** of new-sample validation. The tag is retained to preserve an honest release history.
+These files are new screenshots from `justinnull-western-governors-university / nyc_airbnb`, with the account breadcrumb visible:
 
-The cleaning arguments, both missing data tests, and orchestration were restored in commit `9a6dfb2ec358ab16230905901363dbe2855721db`. The baseline geographic-check exercise uses this immutable revision:
+- [Reference alias evidence](images/wandb-tag-data-test.png): the new `clean_data.csv:v0` baseline and its `reference` alias.
+- [Pipeline graph evidence](images/wandb-pipeline-graph.png): raw data, cleaning, data checks, splitting, four new models, and held-out evaluation. [Selected model evidence](images/wandb-prod-model.png) shows `model_export:v3` and `prod`.
 
-```bash
-mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
-  -v 9a6dfb2ec358ab16230905901363dbe2855721db -P hydra_options="etl.sample='sample2.csv'"
-```
+The starter animation `images/wandb_select_best.gif` is a course example, not evidence of this account’s work. The executed EDA notebook at `src/eda/eda.ipynb` contains seven executed code cells and zero errors.
 
-The restored baseline produced **five passing tests and one failure**, `test_proper_boundaries`: exactly one listing was outside the accepted region. The pipeline stopped before splitting or training, as required. MLflow parent run: `1c82362fe4f9460195083abe324d2383`.
+## Earlier release exercise
 
-Release `1.0.1` adds the matching inclusive longitude/latitude filter before saving the cleaned data. Run the complete updated release with:
+The earlier trial history is preserved. Published baseline 1.0.2 failed `test_proper_boundaries` on exactly one out-of-bounds listing in `sample2.csv`, with five other checks passing. Corrected release 1.0.3 passed all six checks and trained a new model. Those releases used the old collection names; the resubmission update will use the reviewer-required names above. See the GitHub releases for the immutable earlier code and results.
 
-```bash
-mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
-  -v 1.0.1 -P hydra_options="etl.sample='sample2.csv'"
-```
+## Future improvements
 
-The exact command completed successfully (exit status 0), with **all six data checks passing**. The new sample contained 48,895 rows; price and geographic cleaning retained 46,427. The new model is `random_forest_export:v5`, produced by [run ff4s2rc1](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/ff4s2rc1), with validation MAE **$32.427103/night** and R2 **0.578117**. These are validation results for the updated sample, not a repeat of the earlier held-out evaluation.
+Compare other regressors, improve text features, inspect neighborhood-level errors, and monitor drift and model performance over time.
 
-The artifact chain was verified through W&B: `sample.csv:v1` → `clean_sample.csv:v2` → `trainval_data.csv:v2` → `random_forest_export:v5`. The original `reference` alias remains on clean dataset `v0`, and `prod` remains on selected model `v3`. The new export contains the model, MLflow metadata, environment files, and input examples. See [release validation results](RELEASE_VALIDATION.json).
-
-## Final rubric verification
-
-The final submission release is **[1.0.3](https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter/releases/tag/1.0.3)**, commit `3e42b745a681ea8fb148965c9ac9d17cdec25e86`. It includes the executed EDA notebook (seven code cells executed, zero errors). Extra trial versions are expressly permitted by the rubric.
-
-To close the release-tag evidence requirement, baseline **1.0.2**, cut from the restored pre-filter commit, was run remotely with `sample2.csv`: five checks passed and `test_proper_boundaries` failed on exactly one listing. The subsequent corrected **1.0.3** tag was run remotely on the same sample and completed successfully with **six passing checks**, exit status 0, and a new model `random_forest_export:v6` from [run h9rhljch](https://forge.coreweave.com/wandb/justinnull-western-governors-university/nyc_airbnb/runs/h9rhljch). Its validation MAE is $32.427103/night and R2 is 0.578117. The final lineage uses raw `sample.csv:v1`, clean `clean_sample.csv:v2`, and `trainval_data.csv:v3`.
-
-```bash
-mlflow run https://github.com/justinmon/Project-Build-an-ML-Pipeline-Starter.git \
-  -v 1.0.3 -P hydra_options="etl.sample='sample2.csv'"
-```
-
-See [the complete rubric review](RUBRIC_REVIEW.md) and [release evidence](RELEASE_VALIDATION.json). The rubric's isolated `clean_data.csv` wording differs from Step 2 and later rubric sections; the project follows their consistent `clean_sample.csv` name. The `model_export` requirement is the artifact type; the configured artifact collection is `random_forest_export`.
-
-For submission, select the public GitHub repository in Udacity and include both the GitHub and public W&B project links above in **Submission Details**. Connecting GitHub to Udacity and submitting are separate user actions.
-
-## Possible improvements
-
-Future work could compare other regressors, use richer listing-text features, investigate neighborhood-level errors, and monitor drift and performance over time.
-
-Based on the [Udacity WGU starter project](https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter). The original license is retained.
+Based on the Udacity WGU starter project. The original license is retained.

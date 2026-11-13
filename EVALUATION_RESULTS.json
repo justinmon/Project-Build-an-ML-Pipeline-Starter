@@ -1,8 +1,7 @@
 {
-  "run_id": "sfy1hyph",
-  "run_name": "chocolate-sun-10",
-  "model_artifact": "random_forest_export:v3",
-  "test_artifact": "test_data.csv:v0",
+  "run_id": "p7llvwgm",
+  "model_artifact": "model_export:v3",
+  "test_artifact": "test_data.csv:v4",
   "test_rows": 3801,
   "validation_mae": 34.184256029779775,
   "validation_r2": 0.5506161616124368,
