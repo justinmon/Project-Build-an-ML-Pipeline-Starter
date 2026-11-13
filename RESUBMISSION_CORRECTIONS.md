@@ -1,6 +1,6 @@
 # Reviewer corrections for resubmission
 
-All four requested corrections from the review of the November 12 submission have been implemented and checked against new W&B runs. The earlier rubric review's interpretation of artifact naming and its screenshot evidence were insufficient; this document supersedes that interpretation.
+All four requested corrections from the original submission have been implemented and checked against new W&B runs. The earlier rubric review's interpretation of artifact naming and its screenshot evidence were insufficient; this document supersedes that interpretation.
 
 | Reviewer item | Correction | Verified evidence |
 | --- | --- | --- |
@@ -21,5 +21,3 @@ All four requested corrections from the review of the November 12 submission hav
 [Machine-readable run, artifact, and metric evidence](RESUBMISSION_RESULTS.json) and [the held-out comparison](MODEL_EVALUATION.md) accompany the screenshots.
 
 The exact corrected release **1.0.4** was executed remotely on `sample2.csv` and finished with exit status 0, all six checks passing, and new model **`model_export:v4`**, run **`d3qrlnnt`**. Its validation MAE is $32.427103 and R2 is 0.578117. The audit verified `clean_data.csv:v1`, `trainval_data.csv:v5`, the complete seven-file model package, 46,427 clean rows, and preservation of the original `reference` and selected `prod` aliases. The previously accepted baseline-failure exercise remains in immutable releases 1.0.2 and 1.0.3.
-
-The project has not been resubmitted. Grading remains the reviewer's decision.
